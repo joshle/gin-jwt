@@ -241,8 +241,11 @@ func (mw *GinJWTMiddleware) MiddlewareInit() error {
 
 	if mw.IdentityHandler == nil {
 		mw.IdentityHandler = func(claims jwt.MapClaims) string {
-			id := claims["sub"].(int)
-			return strconv.Itoa(id)
+			id := claims["sub"].(float64)
+			if id_str, err := strconv.ParseFloat(id, 64); err == nil {
+				return id_str
+			}
+			return "0"
 		}
 	}
 
